@@ -1,0 +1,23 @@
+name: Sponsor Outreach
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday at 9AM UTC
+  workflow_dispatch:
+
+jobs:
+  sponsor-outreach:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Run Sponsor Bot
+        env:
+          BOT_EMAIL: ${{ secrets.BOT_EMAIL }}
+          BOT_PASSWORD: ${{ secrets.BOT_PASSWORD }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          pip install openai
+          python ai_agents/sponsor_bot.py
