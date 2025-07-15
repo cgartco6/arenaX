@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArenaX - Mech Battle Arena</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loading-container">
+        <div class="loader"></div>
+        <p>Loading ArenaX Battle System...</p>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+    </div>
+    
+    <div id="game-container" style="display:none;">
+        <div id="unity-container" class="unity-desktop">
+            <canvas id="unity-canvas"></canvas>
+            <div id="unity-loading-bar">
+                <div id="unity-progress-bar-empty"></div>
+                <div id="unity-progress-bar-full"></div>
+            </div>
+        </div>
+        
+        <div id="game-ui">
+            <div id="player-stats">
+                <div class="stat">
+                    <span class="label">Level:</span>
+                    <span id="player-level">1</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Credits:</span>
+                    <span id="player-credits">150</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Health:</span>
+                    <div class="bar">
+                        <div id="health-bar" class="fill"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="shop-button" class="button">
+                <img src="icons/shop.png" alt="Shop">
+                <span>ARMORY</span>
+            </div>
+            
+            <div id="battle-pass-button" class="button">
+                <img src="icons/battlepass.png" alt="Battle Pass">
+                <span>BATTLE PASS</span>
+            </div>
+        </div>
+    </div>
+    
+    <div id="shop-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>MECH ARMORY</h2>
+            <div class="shop-categories">
+                <button class="category active" data-category="weapons">WEAPONS</button>
+                <button class="category" data-category="skins">SKINS</button>
+                <button class="category" data-category="upgrades">UPGRADES</button>
+                <button class="category" data-category="currency">CREDITS</button>
+            </div>
+            
+            <div class="shop-items">
+                <!-- Items will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <div id="battle-pass-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>ELITE BATTLE PASS</h2>
+            <div class="pass-container">
+                <div class="free-pass">
+                    <h3>FREE PASS</h3>
+                    <div class="rewards">
+                        <div class="reward">Level 5: Common Skin</div>
+                        <div class="reward">Level 10: 100 Credits</div>
+                        <div class="reward">Level 15: Weapon Mod</div>
+                    </div>
+                </div>
+                
+                <div class="premium-pass">
+                    <h3>ELITE PASS <span class="badge">$4.99</span></h3>
+                    <ul>
+                        <li>Exclusive Legendary Skin</li>
+                        <li>+50% XP Boost</li>
+                        <li>Premium Mech Customization</li>
+                        <li>Access to Elite Tournaments</li>
+                        <li>Daily Credit Bonus</li>
+                    </ul>
+                    <button id="buy-pass-button">UPGRADE TO ELITE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="tournament-banner">
+        <div class="sponsor-logo"></div>
+        <div class="info">
+            <h3>WEEKLY CHAMPIONSHIP</h3>
+            <p>Sponsored by <span id="sponsor-name">TechCorp</span></p>
+            <p>$10,000 Prize Pool</p>
+            <button id="join-tournament">JOIN NOW (100 CREDITS)</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
