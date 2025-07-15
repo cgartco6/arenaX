@@ -1,0 +1,13 @@
+.env
+__pycache__/
+*.pyc
+*.log
+*.DS_Store
+venv/
+*.h5
+*.bin
+*.unitypackage
+payout_audit.log
+payout_errors.log
+reconciliation_log.csv
+*.bak
