@@ -3,6 +3,42 @@ import os
 import time
 import json
 from dotenv import load_dotenv
+from tensorflow.keras.models import load_model
+import joblib
+
+class PaymentGuard:
+    def __init__(self):
+        try:
+            self.fraud_model = load_model('resources/ml_models/fraud_detector.h5')
+            self.scaler = joblib.load('resources/ml_models/fraud_scaler.pkl')
+            self.anomaly_threshold = 0.92
+        except:
+            self.fraud_model = None
+            self.scaler = None
+            self.anomaly_threshold = 0.85
+        
+    def predict_fraud(self, transaction):
+        if not self.fraud_model or not self.scaler:
+            # Fallback to simple rules
+            return transaction['amount'] > 500 and transaction['location_mismatch']
+        
+        # Prepare features
+        features = np.array([
+            transaction['amount'],
+            transaction['hour'],
+            transaction['day_of_week'],
+            transaction['merchant_category'],
+            transaction['customer_history'],
+            transaction['device_type'],
+            int(transaction['location_mismatch']),
+            transaction['ip_risk_score']
+        ]).reshape(1, -1)
+        
+        # Scale features
+        features = self.scaler.transform(features)
+        
+        # Predict fraud probability
+        return self.fraud_model.predict(features)[0][0]
 
 load_dotenv()
 
