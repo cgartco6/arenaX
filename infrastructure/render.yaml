@@ -1,0 +1,69 @@
+# Render.com Infrastructure Configuration
+# Zero-cost setup for ArenaX game backend
+
+services:
+  - type: web
+    name: arena-x-backend
+    runtime: python
+    buildCommand: |
+      pip install -r server/requirements.txt
+      python -c "from monetization import payout_router; payout_router.log_transaction('System', 0, 'USD', 'Deployment started')"
+    startCommand: uvicorn server.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: STRIPE_KEY
+        value: ${STRIPE_KEY}
+      - key: STRIPE_ACCOUNT_ID
+        value: ${STRIPE_ACCOUNT_ID}
+      - key: VALR_KEY
+        value: ${VALR_KEY}
+      - key: VALR_SECRET
+        value: ${VALR_SECRET}
+      - key: TRUST_KEY
+        value: ${TRUST_KEY}
+      - key: PAYPAL_ID
+        value: ${PAYPAL_ID}
+      - key: FNB_ACCOUNT_NUMBER
+        value: ${FNB_ACCOUNT_NUMBER}
+      - key: FNB_ACCOUNT_NAME
+        value: ${FNB_ACCOUNT_NAME}
+      - key: HF_TOKEN
+        value: ${HF_TOKEN}
+      - key: API_KEY
+        value: ${API_KEY}
+      - key: PRODUCTION_URL
+        value: https://arena-x.onrender.com
+    env: python
+    pythonVersion: "3.10.12"
+    plan: free
+    autoDeploy: true
+    region: ohio
+    healthCheckPath: /health
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1
+    numInstances: 1
+
+  - type: static_site
+    name: arena-x-frontend
+    buildCommand: |
+      echo "Building ArenaX client..."
+      # This would be Unity build commands in a real project
+      # For this demo, we'll just copy static files
+      cp -r client/* public/
+    publishDir: public
+    env: static
+    autoDeploy: true
+    plan: free
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  - name: arena-x-db
+    plan: free
+    region: ohio
+    databaseName: arenaX
+    user: arenaX_user
+    ipAllowList: []
